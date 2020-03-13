@@ -3,7 +3,7 @@
  * Ver 1.00
  * --------
  * First version for NodeMCU
- * 
+ * Lo he adaptado de un control de rele IoT Timer https://www.instructables.com/id/ESP8266-01-IoT-Smart-Timer-for-Home-Automation/
  * 
  */
 
