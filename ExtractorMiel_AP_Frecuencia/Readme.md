@@ -40,6 +40,9 @@ NodeMCU      Nokia NK5110 LCD
  @octocat :+1: This PRprogram looks great - it's ready to merge! :shipit:
  # Esquema general
  <img src="https://github.com/miguelalonso/ExtractorMiel/blob/master/ExtractorMiel_AP_Frecuencia/Esquema_extractor_miel_control veloc_3.jpg?raw=true" />
+ <img src="https://github.com/miguelalonso/ExtractorMiel/blob/master/ExtractorMiel_AP_Frecuencia/extractor2.png?raw=true" />
+ <img src="https://github.com/miguelalonso/ExtractorMiel/blob/master/ExtractorMiel_AP_Frecuencia/extractor1.png?raw=true" />
+ 
  <img src="https://github.com/miguelalonso/ExtractorMiel/blob/master/ExtractorMiel_AP_Frecuencia/20200723_123219.jpg?raw=true" />
  <img src="https://github.com/miguelalonso/ExtractorMiel/blob/master/ExtractorMiel_AP_Frecuencia/20200723_123231.jpg?raw=true" />
  <img src="https://github.com/miguelalonso/ExtractorMiel/blob/master/ExtractorMiel_AP_Frecuencia/20200723_123239.jpg?raw=true" />
