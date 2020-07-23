@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html charset="UTF-8">
+  <head>
+    <meta name="viewport">
+    <!--script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')-->
+    <script src="js/jquery.min.js"></script>
+    <!--script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')-->
+    <script src="js/bootstrap.min.js"></script>
+    <!--script(src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js")-->
+    <script src="js/bootstrap-table.min.js"></script>
+    <!--link(rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css")-->
+    <link rel="stylesheet" href="css/bootstrap-table.min.css">
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/superhero/bootstrap.min.css" rel="stylesheet" title="main"> -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" title="main">
+    <title>Extractor de Miel - Controlador</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <h1>Extractor de Miel - Controlador</h1>
+      <ul class="nav nav-tabs" id="tab">
+        <li class="active"><a href="#tab_mesures" data-toggle="tab">Programa Extractor</a></li>
+        <li><a href="#tab_gpio" data-toggle="tab">Control Manual  </a></li>
+        <li><a href="#tab_graphs" data-toggle="tab">Futuro</a></li>
+
+        <li><a href="#tab_configuration" data-toggle="tab">Futuro2</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab_mesures">
+          <h2>Programas</h2>
+
+
+
+
+          <hr>
+          <div class="btn-group">
+          <button type="button" class="btn btn-secondary btn-lg" id="btn_control_on" >Run</button>
+          <button type="button" class="btn btn-secondary btn-lg" id="btn_control_off">Stop</button>
+          <button type="button" class="btn btn-secondary btn-lg" id="btn_control_man">Manual</button>
+          </div>
+          <button type="button" class="btn btn-primary btn-lg" id="btn_control_save">Guardar</button>
+          <hr>
+
+          <div id="contentA" style="width: 80%; margin: auto;">
+          </div>
+
+
+
+        </div>
+        <div class="tab-pane fade" id="tab_graphs">
+          <h2>....reservado</h2>
+        </div>
+        <div class="tab-pane fade" id="tab_gpio">
+          <h2>Control Manual</h2>
+          <div class="row">
+            <div class="col-xs-4 col-md-4">
+              <h4 class="text-left"> D5 Derechas
+                <span class="badge progress-bar-danger" id="D5_etat">OFF</span>
+              </h4>
+            </div>
+            <div class="col-xs-3 col-md-3">
+              <div class="button btn btn-success btn-lg" id="D5_On" type="button">ON</div>
+            </div>
+            <div class="col-xs-3 col-md-3">
+              <div class="button btn btn-danger btn-lg" id="D5_Off" type="button">OFF</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-4 col-md-4">
+              <h4 class="text-left">D6 Izquierdas
+                <div class="badge progress-bar-danger" id="D6_etat">OFF</div>
+              </h4>
+            </div>
+            <div class="col-xs-3 col-md-3">
+              <div class="button btn btn-success btn-lg" id="D6_On" type="button">ON</div>
+            </div>
+            <div class="col-xs-3 col-md-3">
+              <div class="button btn btn-danger btn-lg" id="D6_Off" type="button">OFF</div>
+            </div>
+
+          </div>
+        </div>
+        <div class="tab-pane fade" id="tab_configuration">
+          <h2>Configuracion        </h2>
+
+        </div>
+      </div>
+
+      <div class="alert alert-info">
+        <small>Alert!</small>
+        <p></p>
+      </div>
+
+      <div class="row" >
+        <div class="col-xs-2 col-md-2"><img src="img/logo.png" width="90" height="90"></div>
+      </div>
+    </div>
+    <!--script(src='js/script.js')-->
+    <script>
+
+    var conf=[];
+    var progrecibido;
+
+  $( document ).ready(function() {
+          console.log( "document loaded" );
+
+            $("#contentA").html("Espere, cargando configuraci&oacute;n");
+
+            receiveprog(function(){
+              console.log(prog);
+              dibujabotonestemp(prog["modo"]);
+              showprogs();
+            });
+
+
+          setInterval(function(){
+            receiveprog();
+            readgpio();
+            },60000);
+  });
+
+
+  $("#btn_control_save").on("click", function()
+  {
+    console.log("guardando configuración");
+    saveprog();
+    });
+
+
+    function showprogs(){
+      $("#contentA").html("");
+        for (p=0; p<10; p++)
+        {
+            elementId = p;
+          tiempo_prog=prog.prog[p].tiempo;
+          velocidad_prog=prog.prog[p].velocidad;
+          //if(p % 2 == 0){lab1="checked"; lab2=""}else{lab1=""; lab2="checked"}
+          if(prog.prog[p].giro){lab2="checked"; lab1="";}else{lab2=""; lab1="checked";}
+          if(prog.prog[p].activo){lab3="checked"; }else{lab3=""; }
+
+          str = "";
+          str += "<table style=\"width: 100%\"><tr><td> <span id=\"prog" +p+"\"> Prog"+p+":</span></td>"
+          str += "<td>Tiempo de giro (s): <input maxlength=\"8\" size=\"8\" type=\"number\"  id=\"tiempo_prog"+p+"\" value=\""+tiempo_prog+"\"></td>"
+          str +=" <td>"
+          str += "<td>Velocidad de giro (%): <input maxlength=\"8\" size=\"8\" type=\"number\"  id=\"velocidad_prog"+p+"\" value=\""+velocidad_prog+"\"></td>"
+          str +=" <td>"
+          str +="<label class='radio-inline' ><input type='radio'"+lab1+" id='giro_dcha"+p+"' name='optradio"+p+"'>Giro Derechas</label>"
+          str +="<label class='radio-inline'><input type='radio'"+lab2+" id='giro_izda"+p+"' name='optradio"+p+"'>Giro Izquierdas</label>"
+          str +="</td>"
+          str += "<td><input type=\"checkbox\" "+lab3+" id=\"activo"+p+"\" name=\"activo"+p+"\"> Activo</td>"
+          str += "</tr></table></td>"
+          str += "<hr>"
+
+        $("#contentA").append("<div id=\"prog"+p+"\">"+str+"</div>");
+
+        (function(elementId) {
+          $("#giro_dcha"+elementId).on("click", function()
+          {
+            prog.prog[elementId].giro=0;
+            console.log("giro derecha :"+prog.prog[elementId].giro);
+          })
+          $("#giro_izda"+elementId).on("click", function()
+          {
+            prog.prog[elementId].giro=1;
+            console.log("giro izda :"+prog.prog[elementId].giro);
+          })
+        })(p);
+
+      }
+    }
+
+
+
+    $(".btn-group > .btn").click(function(){
+      $(this).addClass("active").siblings().removeClass("active");
+        controlbotonestemp(this);
+    });
+
+    function controlbotonestemp(esto){
+        $("#btn_control_man").attr('class', 'btn btn btn-secondary btn-lg');
+        $("#btn_control_on").attr('class', 'btn btn btn-secondary btn-lg');
+        $("#btn_control_off").attr('class', 'btn btn btn-secondary btn-lg');
+        //$("#btn_control_save").attr('class', 'btn btn btn-primary btn-lg');
+      if(esto.id=="btn_control_man"){
+          prog["modo"]=2;
+          $(esto).attr('class', 'btn btn btn-warning btn-lg');
+      }
+      if(esto.id=="btn_control_on"){
+          prog["modo"]=1;
+          $(esto).attr('class', 'btn btn btn-success btn-lg');
+      }
+      if(esto.id=="btn_control_off"){
+          prog["modo"]=0;
+          $(esto).attr('class', 'btn btn btn-danger btn-lg');
+      }
+
+       saveprog();
+       receiveprog();
+       readgpio();
+
+       dibujabotonestemp(prog["modo"]);
+
+    }
+
+    function dibujabotonestemp(modo){
+        $("#btn_control_man").attr('class', 'btn btn btn-secondary btn-lg');
+        $("#btn_control_on").attr('class', 'btn btn btn-secondary btn-lg');
+        $("#btn_control_off").attr('class', 'btn btn btn-secondary btn-lg');
+
+      if(modo==1){
+          $(".alert small").text("seleccionado modo RUN");
+          $('#btn_control_on').attr('class', 'btn btn btn-success btn-lg');
+      }
+      if(modo==0){
+          $(".alert small").text("seleccionado modo STOP");
+          $('#btn_control_off').attr('class', 'btn btn btn-danger btn-lg');
+      }
+      if(modo==2){
+        $(".alert small").text("seleccionado modo MANUAL");
+          $('#btn_control_man').attr('class', 'btn btn btn-info btn-lg');
+      }
+    }
+
+
+
+    function saveprog(){
+      for(j=0;j<10;j++){
+        prog.prog[j].activo=0;
+          if ($('input[name="activo'+j+'"]').prop('checked') == true)
+          {
+            console.log("activo"+j);
+            prog.prog[j].activo=1;
+          }
+      };
+
+      prog['modo']=prog.modo;
+      str2 = "&modo="+prog['modo'];
+      for (i=0;i<10;i++){
+        prog.prog[i].tiempo=$('#tiempo_prog'+i).val();
+        prog.prog[i].velocidad=$('#velocidad_prog'+i).val();
+        str2 += "&tiempo"+i+"=" + prog.prog[i].tiempo;
+        str2 += "&velocidad"+i+"=" + prog.prog[i].velocidad;
+        str2 += "&giro"+i+"=" +prog.prog[i].giro;
+        str2 += "&activo"+i+"=" + prog.prog[i].activo;
+      }
+
+      $.post("saveprog?cmd=" + 'saveprog' +
+        str2
+        ).done(function(data){
+          if ( data.success === "1" ) {
+            $(".alert small").text("Conf grabada!");
+            console.log(str2);
+            console.log(prog);
+            receiveprog();
+          } else {
+              showError("error grabando config")
+          }
+        }).fail(function(err){
+          console.log("err saving config " + JSON.stringify(err));
+          console.log(str2);
+        });
+    }
+
+
+    function receiveprog(){
+      //num_rele++;
+      //if(num_rele>=num_total_reles){num_rele=0;}
+      actual=new Date();
+
+      $.getJSON('/sendprog.json', function(data){
+        ProgObject = JSON.parse(JSON.stringify(data));
+
+          prog = ProgObject;
+          console.log("prog");
+          console.log(prog);
+          showprogs();
+          dibujabotonestemp(prog["modo"]);
+          $(".alert small").text('Value Changed!', JSON.stringify(prog));
+
+        }).fail(function(err){
+          jsonString='{"prog":[{"tiempo":120,"velocidad":20,"giro":0,"activo":1},{"tiempo":120,"velocidad":20,"giro":0,"activo":0},{"tiempo":0,"velocidad":0,"giro":0,"activo":0},{"tiempo":0,"velocidad":0,"giro":0,"activo":0},{"tiempo":0,"velocidad":0,"giro":0,"activo":0},{"tiempo":0,"velocidad":0,"giro":0,"activo":0},{"tiempo":0,"velocidad":0,"giro":0,"activo":0},{"tiempo":0,"velocidad":0,"giro":0,"activo":0},{"tiempo":0,"velocidad":0,"giro":0,"activo":0},{"tiempo":0,"velocidad":0,"velocidad":0,"giro":0,"activo":0}],"modo":0}'
+          prog=JSON.parse(jsonString);
+          showprogs();
+          dibujabotonestemp(prog["modo"]);
+        console.log("err getJSON sendDataTimers.json "+JSON.stringify(err));
+      });
+    };
+
+      // Commandes sur le GPIO - GPIO change
+      $('#D5_On').click(function(){ setBouton('D5','1'); });
+      $('#D5_Off').click(function(){ setBouton('D5','0'); });
+      $('#D6_On').click(function(){ setBouton('D6','1'); });
+      $('#D6_Off').click(function(){ setBouton('D6','0'); });
+
+      function setBouton(id, estado){
+        $.post("gpio?id=" + id + "&estado=" + estado).done(function(data){
+
+          console.log("Retour setBouton " + JSON.stringify(data));
+          var id_gpio = "#" + id + "_etat";
+          //console.log(id_gpio);
+          if ( data.success === "1" ) {
+            if ( data.estado === "1" ) {
+              $(id_gpio).removeClass();
+              $(id_gpio).addClass("badge progress-bar-success");
+              $(id_gpio).html("ON");
+            } else {
+              $(id_gpio).removeClass();
+              $(id_gpio).addClass("badge progress-bar-danger");
+              $(id_gpio).html("OFF");
+            }
+            readgpio();
+          } else {
+            $(id_gpio).html('!');
+          }
+        }).fail(function(err){
+          console.log("err setButton " + JSON.stringify(err));
+        });
+      }
+
+      function readgpio(){
+        $.getJSON('/readgpio.json', function(data){
+          var est = ["OFF", "ON"]; //vienen 1 y 0 para que ponga ON/OFF
+          $('#D5_etat').html(est[data.D5]);
+          $("#D5_etat").removeClass();
+          if(data.D5>0){$("#D5_etat").addClass("badge progress-bar-success");}
+          else{$("#D5_etat").addClass("badge progress-bar-danger");}
+          $('#D6_etat').html(est[data.D6]);
+          $("#D6_etat").removeClass();
+          if(data.D6>0){$("#D6_etat").addClass("badge progress-bar-success");}
+          else{$("#D6_etat").addClass("badge progress-bar-danger");}
+
+            $(".alert small").text('Value Changed!', JSON.stringify(data));
+
+        }).fail(function(err){
+          console.log("err getJSON mesures.json "+JSON.stringify(err));
+        });
+      };
+
+
+    </script>
+  </body>
+</html>
