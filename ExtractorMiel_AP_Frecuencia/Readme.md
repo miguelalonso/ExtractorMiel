@@ -1,3 +1,4 @@
+# Extractor de Mile con control de velocidad
 Versión del estractor de mile de Julio de 2020
 control de tiempo, sentido de giro y velocidad
 
@@ -28,6 +29,9 @@ NodeMCU      Nokia NK5110 LCD
  * D7 -----> Botón
  * D8 -----> PWM output Referencia de frecuencia para giro 
  
- http://www.icstation.com/voltage-converter-module-adjustable-converter-power-module-digital-analog-signal-p-12498.html
+ # se usa un módulo [PWM 0-10V]
+ (http://www.icstation.com/voltage-converter-module-adjustable-converter-power-module-digital-analog-signal-p-12498.html)
  modulo convertidor de PWM (salida D8) a una tensión de 0-10V para control del variador de velocidad
+ 
+ @octocat :+1: This PRprogram looks great - it's ready to merge! :shipit:
  
