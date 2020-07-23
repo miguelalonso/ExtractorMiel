@@ -1,4 +1,4 @@
-# Extractor de Mile con control de velocidad
+# Extractor de Miel con control de velocidad
 ## Hecho par el extractor de Miel de Fernando
 Versión del estractor de mile de Julio de 2020
 control de tiempo, sentido de giro y velocidad
@@ -36,5 +36,5 @@ NodeMCU      Nokia NK5110 LCD
  
  @octocat :+1: This PRprogram looks great - it's ready to merge! :shipit:
  
- ExtractorMiel/ExtractorMiel_AP_Frecuencia/20200723_123219.jpg
+![Preview] (https://github.com/miguelalonso/ExtractorMiel/blob/master/ExtractorMiel_AP_Frecuencia/20200723_123219.jpg)
  
