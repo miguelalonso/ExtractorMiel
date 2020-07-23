@@ -36,5 +36,5 @@ NodeMCU      Nokia NK5110 LCD
  
  @octocat :+1: This PRprogram looks great - it's ready to merge! :shipit:
  
-![Preview] (https://github.com/miguelalonso/ExtractorMiel/blob/master/ExtractorMiel_AP_Frecuencia/20200723_123219.jpg)
+![Screenshot] (https://github.com/miguelalonso/ExtractorMiel/blob/master/ExtractorMiel_AP_Frecuencia/20200723_123219.jpg)
  
