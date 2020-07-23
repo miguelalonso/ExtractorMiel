@@ -2,6 +2,9 @@
 ## Hecho par el extractor de Miel de Fernando
 Versión del estractor de mile de Julio de 2020
 control de tiempo, sentido de giro y velocidad
+Se usa un NodeMCU. 
+se Crea un punto de acceso (AP), uno se conecta con el movil a esa red y se configura el programa
+
 
 
 NodeMCU      Nokia NK5110 LCD
@@ -35,6 +38,14 @@ NodeMCU      Nokia NK5110 LCD
  modulo convertidor de PWM (salida D8) a una tensión de 0-10V para control del variador de velocidad
  
  @octocat :+1: This PRprogram looks great - it's ready to merge! :shipit:
+ # Esquema general
+ <img src="https://github.com/miguelalonso/ExtractorMiel/blob/master/ExtractorMiel_AP_Frecuencia/Esquema_extractor_miel_control veloc_3.jpg?raw=true" />
+ <img src="https://github.com/miguelalonso/ExtractorMiel/blob/master/ExtractorMiel_AP_Frecuencia/20200723_123219.jpg?raw=true" />
+ <img src="https://github.com/miguelalonso/ExtractorMiel/blob/master/ExtractorMiel_AP_Frecuencia/20200723_123231.jpg?raw=true" />
+ <img src="https://github.com/miguelalonso/ExtractorMiel/blob/master/ExtractorMiel_AP_Frecuencia/20200723_123239.jpg?raw=true" />
+ <img src="https://github.com/miguelalonso/ExtractorMiel/blob/master/ExtractorMiel_AP_Frecuencia/20200723_123214.jpg?raw=true" />
+ 
+ 
  
 <img src="https://github.com/miguelalonso/ExtractorMiel/blob/master/ExtractorMiel_AP_Frecuencia/20200723_123219.jpg?raw=true" />
  
